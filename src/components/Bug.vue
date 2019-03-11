@@ -1,10 +1,8 @@
 <template>
   <div class="bug">
 
-
   </div>
 </template>
-
 
 <script>
   export default {
