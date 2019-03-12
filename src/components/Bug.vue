@@ -11,15 +11,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="bug-list george" v-for="bug in bugs">
+        <tr :class="{fred : !bug.closed }" class="bug-list george" v-for="bug in bugs">
           <th scope="row">{{bug.createdAt}}</th>
           <router-link :to="{name: 'Details', params:{id: bug._id}}">
             <td>{{bug.title}}</td>
           </router-link>
           <td>{{bug.creator}}</td>
           <td>
-            <i v-if="bug.closed" class="far fa-square">Closed</i>
-            <i v-if="!bug.closed" class="far fa-square">Active</i>
+            <i v-if="bug.closed" class="font2">Closed</i>
+            <i v-if="!bug.closed" class="font2">Active</i>
           </td>
         </tr>
       </tbody>

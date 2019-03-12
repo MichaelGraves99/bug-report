@@ -1,4 +1,4 @@
-module.exports = {
-  publicPath: '/bug-report/',
-  outputDir: 'docs'
-}
+// module.exports = {
+//   publicPath: '/bug-report/',
+//   outputDir: 'docs'
+// }
