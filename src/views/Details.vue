@@ -4,67 +4,87 @@
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{bug.title}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{bug.creator}}</h6>
+            <h5 class="card-title">Bug Title: {{bug.title}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Reported by: {{bug.creator}}</h6>
             <p class="card-text">{{bug.description}}</p>
+            <!-- <a v-if="!bug.closed" class="card-link"
+              @click="editform = !editform">{{editform ? 'Hide Form' : 'Edit'}}</a> -->
             <a v-if="!bug.closed" class="card-link"
-              @click="editForm = !editForm">{{editForm ? 'Hide Form' : 'Edit'}}</a>
-            <a v-if="!bug.closed" class="card-link"
-              @click="bugform = !bugform">{{bugform ? 'Hide Form' : 'Make Comment'}}</a>
-            <form v-if="bugform" @submit.prevent="createComment">
+              @click="bugform = !bugform">{{bugform ? 'Hide Form' : 'Make Note'}}</a>
+            <form v-if="bugform" @submit.prevent="createNote">
               <div class="form-row">
                 <div class="col">
-                  <input v-model="newComment.creator" type="text" class="form-control" placeholder="Name" required>
+                  <input v-model="newNote.creator" type="text" class="form-control" placeholder="Name" required>
                 </div>
                 <div class="col-7">
-                  <input v-model="newComment.content" type="text" class="form-control" placeholder="Comment" required>
+                  <input v-model="newNote.content" type="text" class="form-control" placeholder="Comment" required>
                 </div>
-                <button class="btn btn-success" type="submit">Submit Comment</button>
+                <button class="btn btn-success" type="submit">Submit Note</button>
               </div>
             </form>
-
+            <a v-if="!bug.closed" @click="markComplete" class="card-link">Set Bug As Complete</a>
+            <form v-if="editform" @submit.prevent="editBug(bug)">
+              <div class="form-row">
+                <div class="col">
+                  <input v-model="bug.description" type="text" class="form-control" placeholder="Comment" required>
+                </div>
+                <button class="btn btn-success" type="submit">Edit Bug</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
     <comment></comment>
+
+
   </div>
 </template>
 
-
 <script>
-  import Comment from "@/components/Comment.vue";
-
+  import Comment from '@/components/Comment.vue'
   export default {
-    name: "bugDetails",
-    props: ["id"],
+    name: "Details",
+    props: ['id'],
     mounted() {
-      this.$store.dispatch("getBug", this.id) || {};
+      this.$store.dispatch('getBug', this.id) || {}
     },
     data() {
       return {
-        newComment: {
+        newNote: {
           bug: this.id,
-          flagged: "pending"
+          flagged: 'pending'
         },
-        bugForm: false,
-        editForm: false
-      };
+        bugform: false,
+        editform: false
+      }
     },
     computed: {
       bug() {
-        return this.$store.state.activeBug;
+        return this.$store.state.actBug
       }
     },
     methods: {
-      createComments() {
-        this.$store.dispatch("createComments", this.newComments);
-        this.newComment = {};
-        this.showForm = false;
+      createNote() {
+        this.$store.dispatch('createNote', this.newNote)
+        this.newNote = {}
+        this.showform = false
       },
-
-      components: {
-        Comments
+      markComplete() {
+        this.$store.dispatch('markComplete', this.id)
+        this.$store.dispatch('getNotes', this.id)
       }
-    };
+
+    },
+    components: {
+      Comment
+    }
+  }
 </script>
+
+<style scoped>
+  a {
+    cursor: pointer;
+    color: blue
+  }
+</style>

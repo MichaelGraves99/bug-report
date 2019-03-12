@@ -1,8 +1,32 @@
 <template>
   <div class="bug">
 
+    <table class="table font2">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Title</th>
+          <th scope="col">Reported By</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bug-list george" v-for="bug in bugs">
+          <th scope="row">{{bug.createdAt}}</th>
+          <router-link :to="{name: 'Details', params:{id: bug._id}}">
+            <td>{{bug.title}}</td>
+          </router-link>
+          <td>{{bug.creator}}</td>
+          <td>
+            <i v-if="bug.closed" class="far fa-square">Closed</i>
+            <i v-if="!bug.closed" class="far fa-square">Active</i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
+
 
 <script>
   export default {
@@ -25,5 +49,13 @@
 <style>
   router-link {
     cursor: pointer
+  }
+
+  .george {
+    background-color: lightpink
+  }
+
+  .fred {
+    background-color: lightgray
   }
 </style>
